@@ -1,6 +1,8 @@
 # WC REST Variable Product Restore Fix
 
 Proof-of-concept plugin to fix an inconsistency in WooCommerce Core where **restoring a variable product via the REST API does not restore its variations**, unlike the Admin UI.
+Issue: https://github.com/woocommerce/woocommerce/issues/62833
+
 
 > ⚠️ This plugin is **not intended for production use**.  
 > It exists only to validate and demonstrate the correct behavior before upstreaming the fix into WooCommerce Core.
