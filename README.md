@@ -43,4 +43,39 @@ As a result:
 ## ✅ What This Plugin Does
 
 This plugin hooks into:
+woocommerce_rest_insert_product_object
 
+
+
+When a variable product is updated via REST and its status changes from `trash` → `publish|draft|private`, it:
+
+1. Detects the REST restore action
+2. Iterates over child variations
+3. Untrashes any variation still in `trash`
+4. Syncs the variation status with the parent
+
+This restores **parity between REST API and Admin UI behavior**.
+
+---
+
+## 🧪 How to Reproduce the Bug
+
+1. Create a variable product with one or more variations
+2. Ensure all are `publish`
+3. `DELETE /wp-json/wc/v3/products/{id}` (without `force=true`)
+   - Parent + variations move to `trash`
+4. `PUT /wp-json/wc/v3/products/{id}` with:
+   ```json
+   { "status": "publish" }
+5.Observe:
+  Parent is publish
+  Variations remain trash ❌
+
+How to Verify the Fix
+
+With this plugin active:
+Repeat the steps above
+  -After restoring the parent:
+  -Variations are restored automatically
+  -REST responses for variations return status: publish
+  -Product becomes purchasable again
